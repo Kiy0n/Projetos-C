@@ -5,14 +5,14 @@
 //Constantes para melhor desenvolvimento do programa.
 #define MAX_CONTATOS 100
 #define TAM_NOME 25
-#define TAM_TELEFONE 18
+#define TAM_TELEFONE 9
 #define TAM_EMAIL 50
 #define TAM_ENDERECO 100
 
 //Registro principal do programa.
 struct Contato {
     char nome[TAM_NOME + TAM_NOME];
-    char telefone[TAM_TELEFONE];
+    char telefone[TAM_TELEFONE + TAM_TELEFONE];
     char email[TAM_EMAIL];
     char endereco[TAM_ENDERECO + TAM_ENDERECO];
 
@@ -21,21 +21,25 @@ struct Contato {
 //Função para adcionar contatos
 void adcionarContato(struct Contato *lista, int *numContatos){
     //Captura o nome do Contato.
-    printf("Informe o nome: \n");
-    getchar(); // Limpa o buffer
+    printf("Informe o nome: ");
+    getchar();
     fgets(lista[*numContatos].nome, sizeof(lista[*numContatos].nome), stdin); //Utilizando fgets para poder capturar o espaco para receber nome + sobrenome.
 
+    size_t lenNome = strlen(lista[*numContatos].nome);
+    if (lenNome > 0 && lista[*numContatos].nome[lenNome - 1] == '\n') {
+        lista[*numContatos].nome[lenNome - 1] = '\0';
+    }
+
     //Cadastra o telefone do Contato.
-    printf("Informe o numero de telefone: \n");
-    scanf("%s", lista[*numContatos].telefone);
+    printf("Informe o numero de telefone: ");
+    fgets(lista[*numContatos].telefone, sizeof(lista[*numContatos].telefone), stdin);
 
     //Cadastra o e-mail do Contato.
-    printf("Informe o e-mail: \n");
-    scanf("%s", lista[*numContatos].email);
+    printf("Informe o e-mail: ");
+    fgets(lista[*numContatos].email, sizeof(lista[*numContatos].email), stdin);
 
     //Cadastra o endereço
-    printf("Informe o endereco completo: \n");
-    getchar();
+    printf("Informe o endereco completo: ");
     fgets(lista[*numContatos].endereco, sizeof(lista[*numContatos].endereco), stdin);
 
     (*numContatos)++;
@@ -71,7 +75,7 @@ int buscarContato(const struct Contato *lista, int numContatos, const char *nome
 //Função para alterar o contato existente
 void alterarContato(struct Contato *lista, int numContatos){
     char nomeAlterar[TAM_NOME + TAM_NOME];
-    printf("Informe o nome do contato a ser alterado: \n");
+    printf("Informe o nome do contato a ser alterado: ");
     getchar();
     fgets(nomeAlterar, sizeof(nomeAlterar), stdin);
     //scanf("%s", nomeAlterar);
@@ -88,7 +92,6 @@ void alterarContato(struct Contato *lista, int numContatos){
     if(indice != -1){
         printf("Informe o novo nome: ");
         //scanf("%s", lista[indice].nome);
-        getchar();
         fgets(lista[indice].nome, sizeof(lista[indice].nome), stdin);
 
         len = strlen(lista[indice].nome);
@@ -97,35 +100,35 @@ void alterarContato(struct Contato *lista, int numContatos){
         }
 
         printf("Informe o novo telefone: ");
-        scanf("%s", lista[indice].telefone);
+        fgets(lista[indice].telefone, sizeof(lista[indice].telefone), stdin);
 
         printf("Informe o novo e-mail: ");
-        scanf("%s", lista[indice].email);
+        fgets(lista[indice].email, sizeof(lista[indice].email), stdin);
 
         printf("Informe o novo endereco: ");
-        scanf("%s", lista[indice].endereco);
+        fgets(lista[indice].endereco, sizeof(lista[indice].endereco), stdin);
 
-        printf("Contato alterado com sucesso!");
+        printf("Contato alterado com sucesso!\n");
     } else {
-        printf("Contato nao encontrado. \n");
+        printf("Contato nao encontrado.\n");
     }
 }
 
-void removerContato (struct Contato *lista, int *numContatos){
+void removerContato (struct Contato *lista, int *numContatos) {
     char nomeRemover[TAM_NOME + TAM_NOME];
     printf("Informe o nome do contato a ser removido: ");
     getchar();
     fgets(nomeRemover, sizeof(nomeRemover), stdin);
-    size_t len = strlen(nomeRemover);
 
-    if(len > 0 && nomeRemover[len - 1] == '\n'){
+    size_t len = strlen(nomeRemover);
+    if (len > 0 && nomeRemover[len - 1] == '\n') {
         //Removendo o espaço
         nomeRemover[len - 1] = '\0';
     }
 
     int indice = buscarContato(lista, *numContatos, nomeRemover);
 
-    if(indice != -1){
+    if (indice != -1) {
         for (int i = indice; i < *numContatos - 1; i++){
             lista[i] = lista[i + 1];
         }
