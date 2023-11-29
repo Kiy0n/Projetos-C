@@ -22,11 +22,14 @@ struct Contato {
 void adcionarContato(struct Contato *lista, int *numContatos){
     //Captura o nome do Contato.
     printf("Informe o nome: ");
+    //Comando para limpar a digitacao anterior 'buffer'
     getchar();
     fgets(lista[*numContatos].nome, sizeof(lista[*numContatos].nome), stdin); //Utilizando fgets para poder capturar o espaco para receber nome + sobrenome.
 
+    //Verificando o tamanho da string e removendo espacos no nome apos o final.
     size_t lenNome = strlen(lista[*numContatos].nome);
-    if (lenNome > 0 && lista[*numContatos].nome[lenNome - 1] == '\n') {
+    if (lenNome > 0 && lista[*numContatos].nome[lenNome - 1] == '\n'){
+        //Removendo o espaco
         lista[*numContatos].nome[lenNome - 1] = '\0';
     }
 
@@ -51,12 +54,16 @@ void exibirContatos(struct Contato *lista, int numContatos){
     printf("\nLista de Contatos: \n");
 
     //Loop para mostrar todos os contatos cadastrados bem como seus dados cadastrados.
-    for(int i = 0; i < numContatos; i++){
-        printf("Nome: %s\n", lista[i].nome);
-        printf("Numero: %s\n", lista[i].telefone);
-        printf("E-mail: %s\n", lista[i].email);
-        printf("Endereco: %s\n", lista[i].endereco);
-        printf("---------\n");
+    if (numContatos == 0){
+        printf("Nao existe contatos cadastrados!\n");
+    } else {
+        for(int i = 0; i < numContatos; i++){
+            printf("Nome: %s\n", lista[i].nome);
+            printf("Numero: %s\n", lista[i].telefone);
+            printf("E-mail: %s\n", lista[i].email);
+            printf("Endereco: %s\n", lista[i].endereco);
+            printf("---\n");
+        }
     }
 }
 
@@ -75,20 +82,18 @@ int buscarContato(const struct Contato *lista, int numContatos, const char *nome
 //Função para alterar o contato existente
 void alterarContato(struct Contato *lista, int numContatos){
     char nomeAlterar[TAM_NOME + TAM_NOME];
+
     printf("Informe o nome do contato a ser alterado: ");
     getchar();
     fgets(nomeAlterar, sizeof(nomeAlterar), stdin);
-    //scanf("%s", nomeAlterar);
-    size_t len = strlen(nomeAlterar);
 
-    //Verificando se tem espaço no nome
+    size_t len = strlen(nomeAlterar);
     if(len > 0 && nomeAlterar[len - 1] == '\n'){
-        //Removendo o espaço
         nomeAlterar[len - 1] = '\0';
     }
 
     int indice = buscarContato(lista, numContatos, nomeAlterar);
-
+    //Verificando se o contato a ser alterado existe
     if(indice != -1){
         printf("Informe o novo nome: ");
         //scanf("%s", lista[indice].nome);
@@ -120,14 +125,14 @@ void removerContato (struct Contato *lista, int *numContatos) {
     getchar();
     fgets(nomeRemover, sizeof(nomeRemover), stdin);
 
-    size_t len = strlen(nomeRemover);
-    if (len > 0 && nomeRemover[len - 1] == '\n') {
-        //Removendo o espaço
-        nomeRemover[len - 1] = '\0';
+    size_t lenNome = strlen(nomeRemover);
+    if (lenNome > 0 && nomeRemover[lenNome - 1] == '\n') {
+        nomeRemover[lenNome - 1] = '\0';
     }
 
     int indice = buscarContato(lista, *numContatos, nomeRemover);
 
+    //Verificando se o contato existe e removendo.
     if (indice != -1) {
         for (int i = indice; i < *numContatos - 1; i++){
             lista[i] = lista[i + 1];
