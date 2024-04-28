@@ -21,9 +21,9 @@ typedef struct{
     printf("Numero: %d\n", est->numero);
     printf("Idade: %d\n", est->idade);
     */
-   printf("Nome: %s\n", (*est).nome);
-   printf("Numero: %d\n", (*est).numero);
-   printf("Idade: %d\n", (*est).idade);
+    printf("Nome: %s\n", (*est).nome);
+    printf("Numero: %d\n", (*est).numero);
+    printf("Idade: %d\n", (*est).idade);
 }
 
 int main (){

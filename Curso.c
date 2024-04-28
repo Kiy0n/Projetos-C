@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <locale.h>
 
 typedef struct{
     int id;
@@ -11,19 +12,26 @@ void atualizaCurso(curso *classe);
 void mostraCurso(curso classe);
 
 int main(){
-    curso cs1;
-    atualizaCurso(&cs1);
-    mostraCurso(cs1);
+    setlocale(LC_ALL, "Portuguese");
+
+    curso cs;
+    atualizaCurso(&cs);
+    mostraCurso(cs);
 
     return 0;
 }
 
 void atualizaCurso(curso *classe){
-    strcpy(classe->titulo, "AEDS II");
-    classe->id = 101;
-    classe->horas = 59.5;
+    printf("Digite o ID do curso: ");
+    scanf("%d", &classe->id);
+
+    printf("Digite o título du curso: ");
+    scanf("%s", classe->titulo);
+
+    printf("Digite a duração do curso: ");
+    scanf("%f", &classe->horas);
 }
 
 void mostraCurso(curso classe){
-    printf("ID: %d\tTitulo: %s\tHoras: %2.2f\n", classe.id, classe.titulo, classe.horas);
+    printf("ID: %d\nTitulo: %s\nHoras: %2.2f\n", classe.id, classe.titulo, classe.horas);
 }
